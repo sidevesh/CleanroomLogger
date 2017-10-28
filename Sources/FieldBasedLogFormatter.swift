@@ -20,11 +20,11 @@
  You could do this by constructing a `FieldBasedLogFormatter` as follows:
  
  ```swift
- let formatter = FieldBasedLogFormatter(fields: [.Timestamp(.UNIX),
-                                                 .Delimiter(.Tab),
-                                                 .Severity(.Numeric),
-                                                 .Delimiter(.Tab),
-                                                 .Payload])
+ let formatter = FieldBasedLogFormatter(fields: [.timestamp(.unix),
+                                                 .delimiter(.tab),
+                                                 .severity(.numeric),
+                                                 .delimiter(.tab),
+                                                 .payload])
  ```
  */
 open class FieldBasedLogFormatter: ConcatenatingLogFormatter
@@ -51,13 +51,18 @@ open class FieldBasedLogFormatter: ConcatenatingLogFormatter
         case stackFrame
 
         /** Represents the ID of the thread on which the call was executed. 
-         You should treat thread IDs as opaque strings whose values may be
-         recycled over time. */
-        case callingThread
+         The `CallingThreadStyle` specifies how the thread ID is represented. */
+        case callingThread(CallingThreadStyle)
 
-        /** Represents the `Payload` of a `LogEntry. */
+        /** Represents the `Payload` of a `LogEntry`. */
         case payload
 
+        /** Represents the name of the currently executing process. */
+        case processName
+        
+        /** Represents the ID of the currently executing process. */
+        case processID
+        
         /** Represents a text delimiter. The `DelimiterStyle` specifies the
          content of the delimiter string. */
         case delimiter(DelimiterStyle)
@@ -77,8 +82,10 @@ open class FieldBasedLogFormatter: ConcatenatingLogFormatter
             case .severity(let style):      return SeverityLogFormatter(style: style)
             case .callSite:                 return CallSiteLogFormatter()
             case .stackFrame:               return StackFrameLogFormatter()
-            case .callingThread:            return CallingThreadLogFormatter()
+            case .callingThread(let style): return CallingThreadLogFormatter(style: style)
             case .payload:                  return PayloadLogFormatter()
+            case .processName:              return ProcessNameLogFormatter()
+            case .processID:                return ProcessIDLogFormatter()
             case .delimiter(let style):     return DelimiterLogFormatter(style: style)
             case .literal(let literal):     return LiteralLogFormatter(literal)
             case .custom(let formatter):    return formatter
@@ -90,10 +97,18 @@ open class FieldBasedLogFormatter: ConcatenatingLogFormatter
      Initializes the `FieldBasedLogFormatter` to use the specified fields.
 
      - parameter fields: The `Field`s that will be used by the receiver.
+
+     - parameter hardFail: Determines the behavior of `format(_:)` when one of
+     the receiver's `formatters` returns `nil`. When `false`, if any formatter
+     returns `nil`, it is simply excluded from the concatenation, but formatting
+     continues. Unless _none_ of the `formatters` returns a string, the
+     receiver will always return a non-`nil` value. However, when `hardFail`
+     is `true`, _all_ of the `formatters` must return strings; if _any_
+     formatter returns `nil`, the receiver _also_ returns `nil`.
      */
-    public init(fields: [Field])
+    public init(fields: [Field], hardFail: Bool = false)
     {
-        super.init(formatters: fields.map{ $0.createLogFormatter() })
+        super.init(formatters: fields.map{ $0.createLogFormatter() }, hardFail: hardFail)
     }
 
     /**
@@ -101,9 +116,17 @@ open class FieldBasedLogFormatter: ConcatenatingLogFormatter
 
      - parameter formatters: The `LogFormatter`s that will be used by the
      receiver.
+
+     - parameter hardFail: Determines the behavior of `format(_:)` when one of
+     the receiver's `formatters` returns `nil`. When `false`, if any formatter
+     returns `nil`, it is simply excluded from the concatenation, but formatting
+     continues. Unless _none_ of the `formatters` returns a string, the
+     receiver will always return a non-`nil` value. However, when `hardFail`
+     is `true`, _all_ of the `formatters` must return strings; if _any_
+     formatter returns `nil`, the receiver _also_ returns `nil`.
      */
-    public override init(formatters: [LogFormatter])
+    public override init(formatters: [LogFormatter], hardFail: Bool = false)
     {
-        super.init(formatters: formatters)
+        super.init(formatters: formatters, hardFail: hardFail)
     }
 }

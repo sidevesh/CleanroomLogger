@@ -22,22 +22,15 @@ open class StandardLogFormatter: FieldBasedLogFormatter
 
      - parameter delimiterStyle: If provided, overrides the default field
      separator delimiters. Pass `nil` to use the default delimiters.
+     
+     - parameter callingThreadStyle: If provided, specifies a 
+     `CallingThreadStyle` to use for representing the calling thread. If `nil`,
+     the calling thread is not shown.
 
      - parameter showCallSite: If `true`, the source file and line indicating
      the call site of the log request will be added to formatted log messages.
-
-     - parameter showCallingThread: If `true`, a hexadecimal string containing
-     an opaque identifier for the calling thread will be added to formatted log
-     messages.
-
-     - parameter colorizer: The `TextColorizer` that will be used to colorize
-     the output of the receiver. If `nil`, no colorization will occur.
-
-     - parameter colorTable: If a `colorizer` is provided, an optional 
-     `ColorTable` may also be provided to supply color information. If `nil`,
-     `DefaultColorTable` will be used for colorization.
      */
-    public init(timestampStyle: TimestampStyle? = .default, severityStyle: SeverityStyle? = .simple, delimiterStyle: DelimiterStyle? = nil, showCallSite: Bool = true, showCallingThread: Bool = false, colorizer: TextColorizer? = nil, colorTable: ColorTable? = nil)
+    public init(timestampStyle: TimestampStyle? = .default, severityStyle: SeverityStyle? = .simple, delimiterStyle: DelimiterStyle? = nil, callingThreadStyle: CallingThreadStyle? = .hex, showCallSite: Bool = true)
     {
         var fields: [Field] = []
         var addSeparator = false
@@ -58,8 +51,8 @@ open class StandardLogFormatter: FieldBasedLogFormatter
             fields += [.delimiter(delimiterStyle ?? .spacedPipe)]
             addSeparator = false
         }
-        if showCallingThread {
-            fields += [.callingThread]
+        if let callingThreadStyle = callingThreadStyle {
+            fields += [.callingThread(callingThreadStyle)]
             addSeparator = true
         }
         if addSeparator {
@@ -76,11 +69,6 @@ open class StandardLogFormatter: FieldBasedLogFormatter
         }
         fields += [.payload]
 
-        if colorizer == nil {
-            super.init(fields: fields)
-        }
-        else {
-            super.init(formatters: [ColorizingLogFormatter(formatter: FieldBasedLogFormatter(fields: fields), colorizer: colorizer!, colorTable: colorTable ?? DefaultColorTable())])
-        }
+        super.init(fields: fields)
     }
 }

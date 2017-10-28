@@ -18,14 +18,29 @@ PLATFORM="$2"
 runDestinationForPlatform()
 {
 	case $1 in
-	iOS) 		echo "platform=iOS Simulator,OS=10.0,name=iPhone 7";;
-	macOS) 		echo "platform=macOS";;	
-	tvOS) 		echo "platform=tvOS Simulator,OS=10.0,name=Apple TV 1080p";;
-	watchOS)	echo "platform=watchOS Simulator,OS=3.0,name=Apple Watch Series 2 - 42mm";;
+	iOS)
+		SIMULATOR_ID=`xcrun simctl list | grep -v unavailable | grep "iPad Pro" | grep inch | tail -1 | sed "s/^.*inch) (//" | sed "s/).*$//"`
+		echo "id=$SIMULATOR_ID"
+		;;
+
+	macOS)
+		echo "platform=macOS"
+		;;
+
+	tvOS)
+		SIMULATOR_ID=`xcrun simctl list | grep -v unavailable | grep "Apple TV" | tail -1 | sed "s/) (.*)\$//" | sed "s/^.*(//"`
+		echo "id=$SIMULATOR_ID"
+		;;
+
+	watchOS)
+		SIMULATOR_ID=`xcrun simctl list | grep -v unavailable | grep -v "Watch:" | grep "Apple Watch Series" | tail -1 | sed "s/) (.*)\$//" | sed "s/^.*(//"`
+		echo "id=$SIMULATOR_ID"
+		;;
+
 	esac
 }
 
-case $OPERATION in 
+case $OPERATION in
 	build)
 		MAXIMUM_TRIES=1
 		XCODE_ACTION="clean build";;
@@ -54,8 +69,8 @@ while [[ $THIS_TRY < $MAXIMUM_TRIES ]]; do
 	if [[ $MAXIMUM_TRIES > 1 ]]; then
 		echo "Attempt $THIS_TRY of $MAXIMUM_TRIES..."
 	fi
-	
-	( set -o pipefail && xcodebuild -workspace CleanroomLogger.xcworkspace -configuration Debug -scheme "CleanroomLogger" -destination "$DESTINATION" -destination-timeout 300 $XCODE_ACTION 2>&1 | tee "CleanroomLogger-$PLATFORM-$OPERATION.log" | xcpretty )
+
+	( set -o pipefail && xcodebuild -project CleanroomLogger.xcodeproj -configuration Debug -scheme "CleanroomLogger" -destination "$DESTINATION" -destination-timeout 300 $XCODE_ACTION 2>&1 | tee "CleanroomLogger-$PLATFORM-$OPERATION.log" | xcpretty )
 	XCODE_RESULT="${PIPESTATUS[0]}"
 	if [[ "$XCODE_RESULT" == "0" ]]; then
 		rm "CleanroomLogger-$PLATFORM-$OPERATION.log"

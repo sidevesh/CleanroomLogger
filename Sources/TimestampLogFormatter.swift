@@ -30,7 +30,7 @@ extension TimestampStyle
 {
     fileprivate var dateFormat: String? {
         switch self {
-        case .default:          return "yyyy-MM-dd HH:mm:ss.SSS zzz"
+        case .default:          return "yyyy-MM-dd HH:mm:ss.SSS xxx"
         case .unix:             return nil
         case .custom(let fmt):  return fmt
         }
@@ -46,11 +46,11 @@ extension TimestampStyle
         return formatter
     }
 
-    fileprivate func stringFromDate(_ date: Date, usingFormatter formatter: DateFormatter?)
+    fileprivate func string(from date: Date, using formatter: DateFormatter?)
         -> String
     {
         switch self {
-        case .unix:     return "\(date.timeIntervalSince1970)"
+        case .unix:     return String(describing: date.timeIntervalSince1970)
         default:        return formatter!.string(from: date)
         }
     }
@@ -76,7 +76,7 @@ public struct TimestampLogFormatter: LogFormatter
      `TimestampStyle`.
 
      - parameter style: A `TimestampStyle` value that will govern the output
-     of the `formatLogEntry()` function.
+     of the `format(_:)` function.
      */
     public init(style: TimestampStyle = .default)
     {
@@ -95,6 +95,6 @@ public struct TimestampLogFormatter: LogFormatter
     public func format(_ entry: LogEntry)
         -> String?
     {
-        return style.stringFromDate(entry.timestamp as Date, usingFormatter: formatter)
+        return style.string(from: entry.timestamp, using: formatter)
     }
 }

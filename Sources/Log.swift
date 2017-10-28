@@ -131,30 +131,23 @@ public struct Log
      will be lowered (if necessary) to `.verbose` and `synchronousMode` will be
      used when recording log entries.
 
-     - parameter timestampStyle: Governs the formatting of the timestamp in the
-     log output. Pass `nil` to suppress output of the timestamp.
+     - parameter stdStreamsMode: A `StandardStreamsMode` value that governs
+     when standard console streams (i.e., `stdout` and `stderr`) should be used
+     for recording log output.
 
-     - parameter severityStyle: Governs the formatting of the `LogSeverity` in
-     the log output. Pass `nil` to suppress output of the severity.
-
+     - parameter mimicOSLogOutput: If `true`, any output sent to `stdout` will
+     be formatted in such a way as to mimic the output seen when `os_log()` is
+     used.
+     
      - parameter showCallSite: If `true`, the source file and line indicating
      the call site of the log request will be added to formatted log messages.
-
-     - parameter showCallingThread: If `true`, a hexadecimal string containing
-     an opaque identifier for the calling thread will be added to formatted log
-     messages.
-
-     - parameter suppressColors: If `true`, log message colorization will be
-     disabled. By default, if the third-party XcodeColors plug-in for Xcode
-     is installed, and if CleanroomLogger detects that it is enabled, log
-     messages are colorized automatically.
-
+    
      - parameter filters: The `LogFilter`s to use when deciding whether a given
      `LogEntry` should be passed along for recording.
      */
-    public static func enable(minimumSeverity: LogSeverity = .info, debugMode: Bool = false, verboseDebugMode: Bool = false, timestampStyle: TimestampStyle? = .default, severityStyle: SeverityStyle? = .xcode, showCallSite: Bool = true, showCallingThread: Bool = false, suppressColors: Bool = false, filters: [LogFilter] = [])
+    public static func enable(minimumSeverity: LogSeverity = .info, debugMode: Bool = false, verboseDebugMode: Bool = false, stdStreamsMode: ConsoleLogConfiguration.StandardStreamsMode = .useAsFallback, mimicOSLogOutput: Bool = true, showCallSite: Bool = true, filters: [LogFilter] = [])
     {
-        let config = XcodeLogConfiguration(minimumSeverity: minimumSeverity, debugMode: debugMode, verboseDebugMode: verboseDebugMode, timestampStyle: timestampStyle, severityStyle: severityStyle, showCallSite: showCallSite, showCallingThread: showCallingThread, suppressColors: suppressColors, filters: filters)
+        let config = XcodeLogConfiguration(minimumSeverity: minimumSeverity, debugMode: debugMode, verboseDebugMode: verboseDebugMode, stdStreamsMode: stdStreamsMode, mimicOSLogOutput: mimicOSLogOutput, showCallSite: showCallSite, filters: filters)
 
         enable(configuration: config)
     }
