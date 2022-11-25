@@ -327,6 +327,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 3B9058F91DAECB5200B4EEC0;
@@ -550,6 +551,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
+				"VALID_ARCHS[sdk=macosx*]" = "i386 x86_64 arm64";
 			};
 			name = Debug;
 		};
@@ -565,6 +567,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
+				"VALID_ARCHS[sdk=macosx*]" = "i386 x86_64 arm64";
 			};
 			name = Release;
 		};
