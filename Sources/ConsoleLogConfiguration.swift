@@ -187,7 +187,7 @@ extension ConsoleLogConfiguration
                 return false
             }
 
-            guard let str = String(validatingUTF8: env) else {
+            guard let str = String(validatingCString: env) else {
                 return false
             }
 

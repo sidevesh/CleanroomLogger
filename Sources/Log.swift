@@ -83,27 +83,27 @@ public struct Log
     /** The `LogChannel` that can be used to perform logging at the `.error`
      log severity level. Will be `nil` if logging hasn't yet been enabled, or
      if logging for the `.error` severity has not been configured. */
-    public private(set) static var error: LogChannel?
+    public nonisolated(unsafe) private(set) static var error: LogChannel?
 
     /** The `LogChannel` that can be used to perform logging at the `.warning`
      log severity level. Will be `nil` if logging hasn't yet been enabled, or
      if logging for the `.warning` severity has not been configured. */
-    public private(set) static var warning: LogChannel?
+    public nonisolated(unsafe) private(set) static var warning: LogChannel?
 
     /** The `LogChannel` that can be used to perform logging at the `.info`
      log severity level. Will be `nil` if logging hasn't yet been enabled, or
      if logging for the `.info` severity has not been configured. */
-    public private(set) static var info: LogChannel?
+    public nonisolated(unsafe) private(set) static var info: LogChannel?
 
     /** The `LogChannel` that can be used to perform logging at the `.debug`
      log severity level. Will be `nil` if logging hasn't yet been enabled, or
      if logging for the `.debug` severity has not been configured. */
-    public private(set) static var debug: LogChannel?
+    public nonisolated(unsafe) private(set) static var debug: LogChannel?
 
     /** The `LogChannel` that can be used to perform logging at the `.verbose`
      log severity level. Will be `nil` if logging hasn't yet been enabled, or
      if logging for the `.verbose` severity has not been configured. */
-    public private(set) static var verbose: LogChannel?
+    public nonisolated(unsafe) private(set) static var verbose: LogChannel?
 
     /**
      Enables logging using an `XcodeLogConfiguration`.
@@ -235,7 +235,7 @@ public struct Log
     }
 
     private static let logLock = NSLock()
-    private static var didEnable = false
+    private nonisolated(unsafe) static var didEnable = false
 
     /**
      Assuming CleanroomLogger has not yet been enabled, calling this function
