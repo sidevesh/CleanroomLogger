@@ -19,7 +19,7 @@
 
  Each of these settings can be overridden during instantiation.
  */
-open class ReadableLogFormatter: StandardLogFormatter
+public class ReadableLogFormatter: StandardLogFormatter
 {
     /**
      Initializes a new `ReadableLogFormatter` instance.

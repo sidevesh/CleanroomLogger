@@ -27,7 +27,7 @@
                                                  .payload])
  ```
  */
-open class FieldBasedLogFormatter: ConcatenatingLogFormatter
+public class FieldBasedLogFormatter: ConcatenatingLogFormatter
 {
     /**
      The individual `Field` declarations for the `FieldBasedLogFormatter`.

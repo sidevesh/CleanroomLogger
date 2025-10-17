@@ -13,7 +13,7 @@ import Darwin.C.stdio
  The `OutputStreamLogRecorder` logs messages by writing to the standard
  output stream of the running process.
  */
-open class OutputStreamLogRecorder: LogRecorderBase
+public class OutputStreamLogRecorder: LogRecorderBase
 {
     private let stream: UnsafeMutablePointer<FILE>
     private let newlines: [Character] = ["\n", "\r"]
@@ -53,7 +53,7 @@ open class OutputStreamLogRecorder: LogRecorderBase
      - parameter synchronousMode: If `true`, the recording is being done in
      synchronous mode, and the recorder should act accordingly.
      */
-    open override func record(message: String, for entry: LogEntry, currentQueue: DispatchQueue, synchronousMode: Bool)
+    public override func record(message: String, for entry: LogEntry, currentQueue: DispatchQueue, synchronousMode: Bool)
     {
         var addNewline = true
         if !message.isEmpty {

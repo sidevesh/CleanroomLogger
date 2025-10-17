@@ -25,19 +25,19 @@ import Dispatch
  - `BufferedLogEntryMessageRecorder` stores a `(LogEntry, String)` tuple
  containing the `LogEntry` and formatted log message.
  */
-open class BufferedLogRecorder<BufferItem>: LogRecorderBase
+public class BufferedLogRecorder<BufferItem>: LogRecorderBase
 {
     /** The maximum number if items that will be stored in the receiver's
      buffer */
-    open let bufferLimit: Int
+    public let bufferLimit: Int
 
     /** The function used to create a `BufferItem` given a `LogEntry` and a
      formatted message string. */
-    open let createBufferItem: (LogEntry, String) -> BufferItem
+    public let createBufferItem: (LogEntry, String) -> BufferItem
 
     /** The buffer, an array of `BufferItem`s created to represent the 
      `LogEntry` values recorded by the receiver. */
-    open private(set) var buffer: [BufferItem]
+    public private(set) var buffer: [BufferItem]
 
     /**
      Initializes a new `BufferedLogRecorder`.
@@ -88,7 +88,7 @@ open class BufferedLogRecorder<BufferItem>: LogRecorderBase
      - parameter synchronousMode: If `true`, the recording is being done in
      synchronous mode, and the recorder should act accordingly.
      */
-    open override func record(message: String, for entry: LogEntry, currentQueue: DispatchQueue, synchronousMode: Bool)
+    public override func record(message: String, for entry: LogEntry, currentQueue: DispatchQueue, synchronousMode: Bool)
     {
         let item = createBufferItem(entry, message)
 
@@ -118,7 +118,7 @@ open class BufferedLogRecorder<BufferItem>: LogRecorderBase
  The `BufferedMessageRecorder` buffers the formatted log messages passed to
  its `record()` function.
  */
-open class BufferedMessageRecorder: BufferedLogRecorder<String>
+public class BufferedMessageRecorder: BufferedLogRecorder<String>
 {
     /**
      Initializes a new `BufferedMessageRecorder`.
@@ -152,7 +152,7 @@ open class BufferedMessageRecorder: BufferedLogRecorder<String>
  The `BufferedLogEntryRecorder` buffers each `LogEntry` passed to its
  `record()` function.
  */
-open class BufferedLogEntryRecorder: BufferedLogRecorder<LogEntry>
+public class BufferedLogEntryRecorder: BufferedLogRecorder<LogEntry>
 {
     /**
      Initializes a new `BufferedLogEntryRecorder`.
@@ -186,7 +186,7 @@ open class BufferedLogEntryRecorder: BufferedLogRecorder<LogEntry>
  The `BufferedLogEntryMessageRecorder` buffers each `LogEntry` and formatted
  message passed to its `record()` function.
  */
-open class BufferedLogEntryMessageRecorder: BufferedLogRecorder<(LogEntry, String)>
+public class BufferedLogEntryMessageRecorder: BufferedLogRecorder<(LogEntry, String)>
 {
     /**
      Initializes a new `BufferedLogEntryMessageRecorder`.

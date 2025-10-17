@@ -21,7 +21,7 @@ import Dispatch
  directed to `stdout`, while those with a severity of `.warning` and `.error`
  are directed to `stderr`.
  */
-open class StandardStreamsLogRecorder: LogRecorderBase
+public class StandardStreamsLogRecorder: LogRecorderBase
 {
     private let stdout: StandardOutputLogRecorder
     private let stderr: StandardErrorLogRecorder
@@ -64,7 +64,7 @@ open class StandardStreamsLogRecorder: LogRecorderBase
      - parameter synchronousMode: If `true`, the recording is being done in
      synchronous mode, and the recorder should act accordingly.
      */
-    open override func record(message: String, for entry: LogEntry, currentQueue: DispatchQueue, synchronousMode: Bool)
+    public override func record(message: String, for entry: LogEntry, currentQueue: DispatchQueue, synchronousMode: Bool)
     {
         if entry.severity <= .info {
             stdout.record(message: message, for: entry, currentQueue: currentQueue, synchronousMode: synchronousMode)

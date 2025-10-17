@@ -14,7 +14,7 @@ import Dispatch
  log messages to the standard output stream ("`stdout`") of the running
  process.
 */
-open class StandardOutputLogRecorder: OutputStreamLogRecorder
+public class StandardOutputLogRecorder: OutputStreamLogRecorder
 {
     /**
      Initializes a `StandardOutputLogRecorder` instance to use the specified

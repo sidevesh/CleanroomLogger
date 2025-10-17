@@ -14,7 +14,7 @@ import Dispatch
  log messages to the standard error stream ("`stderr`") of the running
  process.
  */
-open class StandardErrorLogRecorder: OutputStreamLogRecorder
+public class StandardErrorLogRecorder: OutputStreamLogRecorder
 {
     /**
      Initializes a `StandardErrorLogRecorder` instance to use the specified

@@ -9,7 +9,7 @@
 /**
  A `LogConfiguration` optimized for use when running within Xcode.
 */
-open class XcodeLogConfiguration: ConsoleLogConfiguration
+public class XcodeLogConfiguration: ConsoleLogConfiguration
 {
     /**
      Initializes a new `XcodeLogConfiguration` instance.

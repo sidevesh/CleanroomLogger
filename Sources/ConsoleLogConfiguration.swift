@@ -17,7 +17,7 @@ import Darwin.C.stdlib
  configured to bypass it, log messages will be written to either the `stdout`
  or `stderr` output stream of the running process.
  */
-open class ConsoleLogConfiguration: BasicLogConfiguration
+public class ConsoleLogConfiguration: BasicLogConfiguration
 {
     /** Governs when a `ConsoleLogConfiguration` directs log messages to 
      `stdout` and `stderr`. */

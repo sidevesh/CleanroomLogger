@@ -16,15 +16,15 @@ import Foundation
  the log directory specified by its `directoryPath` property. Please see the
  initializer documentation for details.
 */
-open class RotatingLogFileRecorder: LogRecorderBase
+public class RotatingLogFileRecorder: LogRecorderBase
 {
     /** The number of days for which the receiver will retain log files
      before they're eligible for pruning. */
-    open let daysToKeep: Int
+    public let daysToKeep: Int
 
     /** The filesystem path to a directory where the log files will be
      stored. */
-    open let directoryPath: String
+    public let directoryPath: String
 
     private static let filenameFormatter: DateFormatter = {
         let fmt = DateFormatter()
@@ -73,7 +73,7 @@ open class RotatingLogFileRecorder: LogRecorderBase
 
      - returns: The filename.
     */
-    open class func logFilename(forDate date: Date)
+    public class func logFilename(forDate date: Date)
         -> String
     {
         return filenameFormatter.string(from: date)
@@ -107,7 +107,7 @@ open class RotatingLogFileRecorder: LogRecorderBase
      
      - throws: If the function fails to create a directory at `directoryPath`.
      */
-    open func createLogDirectory()
+    public func createLogDirectory()
         throws
     {
         let url = URL(fileURLWithPath: directoryPath, isDirectory: true)
@@ -131,7 +131,7 @@ open class RotatingLogFileRecorder: LogRecorderBase
      - parameter synchronousMode: If `true`, the recording is being done in
      synchronous mode, and the recorder should act accordingly.
     */
-    open override func record(message: String, for entry: LogEntry, currentQueue: DispatchQueue, synchronousMode: Bool)
+    public override func record(message: String, for entry: LogEntry, currentQueue: DispatchQueue, synchronousMode: Bool)
     {
         if mostRecentLogTime == nil || !self.isDate(entry.timestamp as Date, onSameDayAs: mostRecentLogTime!) {
             prune()
@@ -149,7 +149,7 @@ open class RotatingLogFileRecorder: LogRecorderBase
      - warning: Any file within the `directoryPath` not recognized as an active
      log file will be deleted during pruning.
     */
-    open func prune()
+    public func prune()
     {
         // figure out what files we'd want to keep, then nuke everything else
         let cal = Calendar.current
